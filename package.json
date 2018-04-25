@@ -1,0 +1,25 @@
+{
+  "name": "homework",
+  "version": "1.0.0",
+  "description": "my home work 1",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js --exec babel-node",
+    "test": " "
+  },
+  "author": "Stahlwittchen",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stahlwittchen/nodejs.git"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "nodemon": "^1.17.3"
+  }
+}
