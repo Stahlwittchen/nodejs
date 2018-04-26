@@ -1,13 +1,13 @@
-let db;
+let config;
 
 module.exports.connect = () => {
-    db = require('./db.json')
+    config = require('./config.json')
 };
 
 module.exports.getName = () => {
-    if(!db.name){
+    if(!config.name){
         throw new Error('No name')
     }
 
-    return db.name;
+    return config.name;
 }

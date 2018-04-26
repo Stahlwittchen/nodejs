@@ -1,5 +1,5 @@
-const db = require('./db');
+const db = require('./config');
 db.connect();
 console.log(db.getName())
 
-require('./app/app')
+require('./models/models')

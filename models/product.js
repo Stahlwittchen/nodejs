@@ -9,3 +9,6 @@ class Product {
 
 //common js
 module.exports = Product;
+
+//ES modules
+//exports default Product;
