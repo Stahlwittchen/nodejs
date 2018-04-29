@@ -1,5 +1,6 @@
-const db = require('./config');
-db.connect();
-console.log(db.getName())
+import config from './config';
+import { User, Product } from './models/models';
 
-require('./models/models')
+console.log(config.name);
+new User();
+new Product();

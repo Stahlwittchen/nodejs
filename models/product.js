@@ -1,14 +1,5 @@
-class Product {
-    constructor(productName) {
-        this.productName = productName;
-    }
-    show(){
-        console.log(`this is ${this.productName}`)
+export default class Product {
+    constructor() {
+        console.log('Product module');
     }
 }
-
-//common js
-module.exports = Product;
-
-//ES modules
-//exports default Product;

@@ -1,14 +1,5 @@
-class User {
-    constructor(name) {
-        this.name = name;
-    }
-    hello(){
-        console.log(`hello, i am ${this.name}`)
+export default class User {
+    constructor() {
+        console.log('User module');
     }
 }
-//common js
-//exports.default = User;
-module.exports = User;
-
-//ES modules
-//exports default User;
