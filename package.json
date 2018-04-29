@@ -2,9 +2,9 @@
   "name": "homework",
   "version": "1.0.0",
   "description": "my home work 1",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon index.js --exec babel-node",
+    "start": "nodemon app.js --exec babel-node",
     "test": " "
   },
   "author": "Stahlwittchen",
