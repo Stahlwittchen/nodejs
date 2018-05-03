@@ -6,7 +6,7 @@ import { Importer } from './models/importer';
 const dirWatcher = new DirWatcher();
 const importer = new Importer();
 
-const directoryPath = `${__dirname.slice(0, -4)}src${path.sep}data`;
+const directoryPath = './data';
 const delayForWatching = 3000;
 const delayForUnWatch = 50000;
 
