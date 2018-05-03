@@ -1,5 +1,5 @@
 import config from './config';
-import { User, Product } from './models/models';
+import { User, Product } from './models';
 
 console.log(config.name);
 new User();
