@@ -4,7 +4,7 @@ import csv from 'csvtojson';
 const Converter = csv.Converter;
 
 export class Importer {
-    constructor() {  }
+    constructor() { }
 
     import(path) {
         return new Promise( (res) => {

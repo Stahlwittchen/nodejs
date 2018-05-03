@@ -9,19 +9,17 @@ export class DirWatcher extends EventEmitter{
         this.filesPathsInDirectory = new Map();
     }
 
-    watch(path, delay) {
+    watch(dir, delay) {
         this.interval = setInterval(() => {
 
-            fs.readdir(path, (err, fileName) =>
+            fs.readdir(dir, (err, fileName) =>
 
                 fileName.forEach(fileName => {
 
-                    const filePath = `${path}\\${fileName}`;
-                    
-                    fs.stat(filePath, (error, stats) => {
+                    fs.stat(path.join(dir, fileName), (error, stats) => {
                         if (this.filesPathsInDirectory[fileName] !== stats.mtimeMs) {
                             this.filesPathsInDirectory[fileName] = stats.mtimeMs;
-                            this.emit("changed", filePath);
+                            this.emit("changed",  path.join(dir, fileName));
                         }
                     });
                 })
