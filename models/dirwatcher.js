@@ -12,17 +12,27 @@ export class DirWatcher extends EventEmitter{
     watch(dir, delay) {
         this.interval = setInterval(() => {
 
-            fs.readdir(dir, (err, fileName) =>
+            fs.readdir(dir, (error, fileName) => {
+
+                if (error) {
+                    throw new error(`this is a wrong path`);
+                }
 
                 fileName.forEach(fileName => {
 
                     fs.stat(path.join(dir, fileName), (error, stats) => {
+
+                        if (error) {
+                            throw new error(`can't read a file`);
+                        }
+
                         if (this.filesPathsInDirectory[fileName] !== stats.mtimeMs) {
                             this.filesPathsInDirectory[fileName] = stats.mtimeMs;
                             this.emit("changed",  path.join(dir, fileName));
                         }
                     });
                 })
+            }
             );
 
         }, delay);
