@@ -74,6 +74,22 @@ const toJson = (file) => {
     })
 };
 
+function cssBundler(args.path) {
+    let bundeledPath = path + '/bundle.css';
+
+    return fs.readdir(args.path, files => {
+        fs.createWriteStream(args.path + bundeledPath);
+        files.filter(fileName => checkFileExtension(fileName, 'css'))
+            .forEach(fileName => {
+                fs.createReadStream(`${args.path}\\${fileName}`)
+                    .pipe(through(function(chunk, enc, cb) {
+                        fs.appendFile(args.path + bundeledPath, Buffer.from(chunk).toString());
+                        cb();
+                    }));
+
+            });
+    });
+}
 
 switch (args.action) {
     case 'reverse':
