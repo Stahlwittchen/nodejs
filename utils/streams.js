@@ -78,13 +78,14 @@ function cssBundler(folderPath) {
 
     return fs.readdir(folderPath, (err, files) => {
         if (err) throw err;
-        fs.createWriteStream(folderPath + bundeledPath);
-        console.log(files.filter(files[0]));
-        files.filter(fileName => checkFileExtension(fileName, 'css'))
+        fs.createWriteStream(bundeledPath);
+        files
+            //.filter(fileName => checkFileExtension(fileName, 'css'))
             .forEach(fileName => {
+                console.log(files);
                 fs.createReadStream(`${folderPath}\\${fileName}`)
                     .pipe(through(function(chunk, enc, cb) {
-                        fs.appendFile(folderPath + bundeledPath, Buffer.from(chunk).toString());
+                        fs.appendFile(bundeledPath, Buffer.from(chunk).toString());
                         cb();
                     }));
 
