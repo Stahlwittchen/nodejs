@@ -1,8 +1,7 @@
 const fs = require('fs');
+const path = require('path');
 const through = require('through2');
 const csv = require('csvtojson');
-const p = require('path');
-
 
 function reverse() {
     process.stdin;
@@ -74,16 +73,18 @@ const toJson = (file) => {
     })
 };
 
-function cssBundler(args.path) {
-    let bundeledPath = path + '/bundle.css';
+function cssBundler(folderPath) {
+    let bundeledPath = path.join(folderPath, 'bundle.css');
 
-    return fs.readdir(args.path, files => {
-        fs.createWriteStream(args.path + bundeledPath);
+    return fs.readdir(folderPath, (err, files) => {
+        if (err) throw err;
+        fs.createWriteStream(folderPath + bundeledPath);
+        console.log(files.filter(files[0]));
         files.filter(fileName => checkFileExtension(fileName, 'css'))
             .forEach(fileName => {
-                fs.createReadStream(`${args.path}\\${fileName}`)
+                fs.createReadStream(`${folderPath}\\${fileName}`)
                     .pipe(through(function(chunk, enc, cb) {
-                        fs.appendFile(args.path + bundeledPath, Buffer.from(chunk).toString());
+                        fs.appendFile(folderPath + bundeledPath, Buffer.from(chunk).toString());
                         cb();
                     }));
 
