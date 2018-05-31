@@ -80,9 +80,9 @@ function cssBundler(folderPath) {
         if (err) throw err;
         fs.createWriteStream(bundeledPath);
         files
-            //.filter(fileName => checkFileExtension(fileName, 'css'))
+            .filter(fileName => path.extname(fileName) == '.css')
             .forEach(fileName => {
-                console.log(files);
+                console.log(fileName);
                 fs.createReadStream(`${folderPath}\\${fileName}`)
                     .pipe(through(function(chunk, enc, cb) {
                         fs.appendFile(bundeledPath, Buffer.from(chunk).toString());
