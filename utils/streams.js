@@ -78,7 +78,6 @@ function cssBundler(folderPath) {
 
     return fs.readdir(folderPath, (err, files) => {
         if (err) throw err;
-        fs.createWriteStream(bundeledPath);
         files
             .filter(fileName => path.extname(fileName) == '.css')
             .forEach(fileName => {
