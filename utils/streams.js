@@ -4,8 +4,6 @@ const through = require('through2');
 const csv = require('csvtojson');
 
 function reverse() {
-    process.stdin;
-
     let toUpperCase = through(function (chunk, enc, callback) {
         this.push(chunk.toString().split("").reverse().join("") + '\n');
         callback();
@@ -14,8 +12,6 @@ function reverse() {
 }
 
 function transform() {
-    process.stdin;
-
     let toUpperCase = through(function (chunk, enc, callback) {
         this.push(chunk.toString().toUpperCase());
         callback();
@@ -24,24 +20,39 @@ function transform() {
 }
 
 function outputFile(file) {
-    exists(file);
-    let reader = fs.createReadStream(file);
-    reader.pipe(process.stdout);
+    fs.stat(file, function (error, stats) {
+        if (error) {
+            throw new Error('File not exists!');
+        } else {
+            let reader = fs.createReadStream(file);
+            reader.pipe(process.stdout);
+        }
+    })
 }
 
 function convertFromFile(file) {
-    exists(file);
-    let reader = fs.createReadStream(file);
+    fs.stat(file, function (error, stats) {
+        if (error) {
+            throw new Error('File not exists!');
+        } else {
+            let reader = fs.createReadStream(file);
 
-    reader.pipe(toJson(file)).pipe(process.stdout);
+            reader.pipe(toJson(file)).pipe(process.stdout);
+        }
+    })
 }
 
 function convertToFile(file) {
-    exists(file);
-    let reader = fs.createReadStream(file);
-    let writer = fs.createWriteStream("../data/test.json");
+    fs.stat(file, function (error, stats) {
+        if (error) {
+            throw new Error('File not exists!');
+        } else {
+            let reader = fs.createReadStream(file);
+            let writer = fs.createWriteStream("./data/test.json");
 
-    reader.pipe(toJson(file)).pipe(writer);
+            reader.pipe(toJson(file)).pipe(writer);
+        }
+    })
 }
 
 const args = require('minimist')(process.argv.slice(2), {
@@ -56,15 +67,6 @@ function printHelp() {
         '--file (path to file)\n-p,' +
         ' --path (path to ...)'
     );
-}
-
-function exists(filePath) {
-    fs.exists(filePath, function (exist) {
-        if (!exist) {
-            console.log("File not exists!");
-            process.exit();
-        }
-    })
 }
 
 const toJson = (file) => {
@@ -95,8 +97,10 @@ function cssBundler(folderPath) {
 switch (args.action) {
     case 'reverse':
         reverse();
+        break;
     case 'transform':
         transform();
+        break;
     case 'outputFile':
         outputFile(args.file);
         break;
