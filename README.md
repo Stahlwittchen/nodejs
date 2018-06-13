@@ -1,2 +1,3 @@
-node ./utils/streams.js -a cssBundler -p ./data
-node ./utils/streams.js -a outputFile -f  .\data\test.csv
+node ./http-servers/plain-text-server.js
+node ./http-servers/html-server.js
+
