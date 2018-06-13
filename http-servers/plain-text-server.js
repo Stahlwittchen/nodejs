@@ -1,10 +1,8 @@
-require(http)
-    .createServer()
-    .on('request', (req, res) => {
-        const { url, method } = req;
-        res.writeHead(200,{
-            'Content-Type': 'text/html'
-        });
-        res.end('<h1>Hello World</h1>')
-    })
-    .listen(3003);
+const http = require('http');
+const port = 3003;
+
+http.createServer(function(request, response){
+    response.setHeader("Content-Type", "text/plain");
+    response.write("hello plain world");
+    response.end();
+}).listen(port);
