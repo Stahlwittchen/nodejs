@@ -1,19 +1,21 @@
 const http = require('http');
 const port = 3003;
-var fs = require("fs");
+const fs = require("fs");
 const path = require('path');
+const through = require('through2');
+const text = 'hello html world!'
 
 http.createServer(function(request, response){
     response.setHeader("Content-Type", "text/html; charset=utf-8");
     var filePath = path.join('http-servers','index.html');
-    fs.readFile(filePath, function (error, data) {
-        console.log(data.toString());
-        if (error) {
-            response.statusCode = 404;
-            response.end("Ресурс не найден")
-        } else {
-            response.end(data);
-        }
-        return;
-    });
-}).listen(port);
+
+    fs.createReadStream(filePath)
+        .pipe(through(function (chunk) {
+            this.push(chunk.toString().replace(/{message}/, text))
+        }))
+        .pipe(response);
+}).listen(port, (error) => {
+    if (error) {
+        throw error;
+    }
+});

@@ -11,8 +11,12 @@ const product = {
     ]
 };
 
-http.createServer(function(request, response){
-    response.setHeader("Content-Type", "application/json; charset=utf-8");
-    response.send(product);
-    response.end();
-}).listen(port);
+http.createServer((request, response) => {
+    response.setHeader('Content-Type', 'application/json');
+    response.end(JSON.stringify(product))
+}).listen(port, (error) => {
+    if (error) {
+        throw error;
+    }
+    console.log(`Server is listening on ${port}!`);
+});
