@@ -1,26 +1,37 @@
-//import path from 'path';
+const express = require('express');
+const app = express();
+const _ = require('underscore');
+const  users = [
+    {
+        id: '1',
+        name: 'Supreme T-Shirt',
+        brand: 'Supreme',
+        price: 99.99,
+        options: [
+            { color: 'blue' },
+            { size: 'XL' }
+        ]
+    },
+    {
+        id: '2',
+        name: 'Supreme T-Shirt 2',
+        brand: 'Supreme',
+        price: 99.99,
+        options: [
+            { color: 'blue' },
+            { size: 'XL' }
+        ]
+    }
+];
 
-import { DirWatcher } from './models/dirwatcher';
-import { Importer } from './models/importer';
+app.listen(3003);
 
-const dirWatcher = new DirWatcher();
-const importer = new Importer();
-
-const directoryPath = './data';
-const delayForWatching = 3000;
-const delayForUnWatch = 50000;
-
-dirWatcher.on('changed', (filePath) => {
-    importer
-        .import(filePath)
-        .then((data) => {
-            console.log(data[0]);
-        });
-    console.log(importer.importSync(filePath)[0]);
-});
-
-dirWatcher.watch(directoryPath, delayForWatching);
-
-setTimeout(() => {
-    dirWatcher.unWatch();
-}, delayForUnWatch);
+app.get('/employees/:id', function (req, res) {
+    const  employee =  _.find(users, {id: req.params.id});
+    console.log(req.params.id);
+    if (employee === undefined){
+        res.status(404)
+            .json({message: `Employee with id ${req.params.id} not found`})
+    }
+    res.json(employee);
+})
