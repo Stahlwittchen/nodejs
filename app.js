@@ -1,37 +1,43 @@
 const express = require('express');
 const app = express();
 const _ = require('underscore');
-const  users = [
-    {
-        id: '1',
-        name: 'Supreme T-Shirt',
-        brand: 'Supreme',
-        price: 99.99,
-        options: [
-            { color: 'blue' },
-            { size: 'XL' }
-        ]
-    },
-    {
-        id: '2',
-        name: 'Supreme T-Shirt 2',
-        brand: 'Supreme',
-        price: 99.99,
-        options: [
-            { color: 'blue' },
-            { size: 'XL' }
-        ]
-    }
-];
+const  users = require('./data/users');
+const  products = require('./data/products');
 
-app.listen(3003);
+app.get('/products', function (req, res) {
+    // req.query.items
+    res
+        .status(200)
+        .json(products)
+});
 
-app.get('/employees/:id', function (req, res) {
-    const  employee =  _.find(users, {id: req.params.id});
-    console.log(req.params.id);
-    if (employee === undefined){
+app.get('/products/:id', function (req, res) {
+    const  product =  _.find(products, {id: req.params.id});
+    if (product === undefined){
         res.status(404)
-            .json({message: `Employee with id ${req.params.id} not found`})
+            .json({message: `product with id ${req.params.id} not found`})
     }
-    res.json(employee);
+    res.json(product);
 })
+
+app.get('/products/:id/reviews', function (req, res) {
+    const  product =  _.find(products, {id: req.params.id});
+    res.json(product.reviews);
+})
+
+app.use(express.static(__dirname));
+
+app.post('/employees', express.json(), function (request, response) {
+    //console.log(request.user);
+    //console.log(request.body);
+    //users.push(request.body);
+    //response.send(`${request.body.userName} - ${request.body.userAge}`);
+});
+
+app.get('/users', function (req, res) {
+    res
+        .status(200)
+        .json(users)
+});
+
+module.exports = app;
