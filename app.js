@@ -39,7 +39,7 @@ app.post('/products', function (request, response) {
     response.json(request.body)
 });
 
-app.get('/users', passport.authenticate('jwt', {session: false}), function (req, res) {
+app.get('/users', checkToken, function (req, res) {
     res
         .status(200)
         .json(users)
@@ -55,6 +55,21 @@ app.post('/auth', function (req, res) {
         let token = jwt.sign(payload, "secret", {expiresIn: 100})
         res.send(token);
     }
-})
+});
+
+function checkToken (req, res, next) {
+    let token = req.headers['x-access-token'];
+    if(token) {
+        jwt.verify(token, 'secret', function (err, decoded) {
+            if (err) {
+                res.json({success: false, message: 'failed to auth token'})
+            } else {
+                next();
+            }
+        })
+    } else {
+        res.status(403).send({success: false, message: 'no token'})
+    }
+}
 
 module.exports = app;
