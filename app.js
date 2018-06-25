@@ -4,6 +4,12 @@ const _ = require('underscore');
 const  users = require('./data/users');
 const  products = require('./data/products');
 
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+
+app.use(express.static(__dirname));
+app.use(express.json());
+
 app.get('/products', function (req, res) {
     // req.query.items
     res
@@ -25,18 +31,30 @@ app.get('/products/:id/reviews', function (req, res) {
     res.json(product.reviews);
 })
 
-app.use(express.static(__dirname));
 
-app.post('/products', express.json(), function (request, response) {
+
+app.post('/products', function (request, response) {
     if(!request.body) return response.sendStatus(400);
     products.push(request.body);
     response.json(request.body)
 });
 
-app.get('/users', function (req, res) {
+app.get('/users', passport.authenticate('jwt', {session: false}), function (req, res) {
     res
         .status(200)
         .json(users)
 });
+
+app.post('/auth', function (req, res) {
+    let user = _.find(users, {email: req.body.email})
+
+    if (user === undefined || user.password !== req.body.password){
+        res.status(403).send({success: false, message: "wrong credential"})
+    } else {
+        let payload = {"sub": user.id, "isActive": user.isActive}
+        let token = jwt.sign(payload, "secret", {expiresIn: 100})
+        res.send(token);
+    }
+})
 
 module.exports = app;

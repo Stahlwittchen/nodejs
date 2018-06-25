@@ -3,12 +3,14 @@
     "id": 1,
     "userName": "test user",
     "email": "user@gmail.com",
-    "password": "password"
+    "password": "password",
+    "isActive": false
   },
   {
     "id": 2,
     "userName": "test user 2",
     "email": "user2@gmail.com",
-    "password": "password2"
+    "password": "password2",
+    "isActive": false
   }
 ]
