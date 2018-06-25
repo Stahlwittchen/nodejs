@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "name": "Supreme T-Shirt",
     "brand": "Supreme",
     "price": 99.99,
@@ -11,7 +11,7 @@
     "reviews": "this is product review. Bla bla bla bla "
   },
   {
-    "id": 2,
+    "id": "2",
     "name": "Supreme T-Shirt 2",
     "brand": "Supreme",
     "price": 99.99,

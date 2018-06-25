@@ -27,11 +27,10 @@ app.get('/products/:id/reviews', function (req, res) {
 
 app.use(express.static(__dirname));
 
-app.post('/employees', express.json(), function (request, response) {
-    //console.log(request.user);
-    //console.log(request.body);
-    //users.push(request.body);
-    //response.send(`${request.body.userName} - ${request.body.userAge}`);
+app.post('/products', express.json(), function (request, response) {
+    if(!request.body) return response.sendStatus(400);
+    products.push(request.body);
+    response.json(request.body)
 });
 
 app.get('/users', function (req, res) {
