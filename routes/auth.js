@@ -1,10 +1,11 @@
 const express = require('express');
-const app = express();
+const router = express.Router();
 const _ = require('underscore');
-const  users = require('../data/users');
 const jwt = require('jsonwebtoken');
 
-app.post('/auth', function (req, res) {
+const  users = require('../data/users');
+
+router.post('/', function (req, res) {
     let user = _.find(users, {email: req.body.email})
 
     if (user === undefined || user.password !== req.body.password){
@@ -16,4 +17,4 @@ app.post('/auth', function (req, res) {
     }
 });
 
-module.exports = app;
+module.exports = router;

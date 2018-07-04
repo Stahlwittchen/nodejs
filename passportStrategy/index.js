@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const passport = require('passport');
 
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -20,7 +19,7 @@ passport.use(new FacebookStrategy({
 passport.use(new TwitterStrategy({
         consumerKey: "TWITTER_CONSUMER_KEY",
         consumerSecret: "TWITTER_CONSUMER_SECRET",
-        callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+        callbackURL: "http://localhost:3003/auth/twitter/callback"
     },
     function(token, tokenSecret, profile, cb) {
         User.findOrCreate({ twitterId: profile.id }, function (err, user) {
@@ -32,7 +31,7 @@ passport.use(new TwitterStrategy({
 passport.use(new GoogleStrategy({
         clientID: "GOOGLE_CLIENT_ID",
         clientSecret: "GOOGLE_CLIENT_SECRET",
-        callbackURL: "http://www.example.com/auth/google/callback"
+        callbackURL: "http://localhost:3003/auth/google/callback"
     },
     function(accessToken, refreshToken, profile, cb) {
         User.findOrCreate({ googleId: profile.id }, function (err, user) {
