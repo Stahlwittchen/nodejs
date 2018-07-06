@@ -22,12 +22,6 @@ router.post('/', function (req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    // const  product =  _.find(products, {id: req.params.id});
-    // if (product === undefined){
-    //     res.status(404)
-    //         .json({message: `product with id ${req.params.id} not found`})
-    // }
-    // res.json(product);
     db.Product.findById(req.params.id)
         .then(products => {
             res.send(products)
@@ -38,7 +32,7 @@ router.get('/:id/reviews', function(req, res) {
     db.Product.findById(req.params.id)
         .then(products => {
             const review = products["name"];
-            res.send(review)
+            res.send(review);
         })
 });
 
