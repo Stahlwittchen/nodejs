@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const users = require('../data/users');
+//const users = require('../data/users');
+
+const db = require("../node_modules/.bin/models");
 
 router.get('/', function(req, res) {
-    if (users === undefined){
-        res.status(404)
-            .json({message: `users not found`})
-    };
-    res
-        .status(200)
-        .json(users)
+    db.User.findAll({raw:true})
+        .then(users => {
+            res.send(users)
+        })
 });
 
 module.exports = router;

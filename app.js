@@ -10,7 +10,7 @@ const check = require('./check');
 app.use(express.static(__dirname));
 app.use(express.json());
 app.use('/auth', auth);
-app.use('/products', check, products);
-app.use('/users',check, users);
+app.use('/products', products);
+app.use('/users', users);
 
 module.exports = app;

@@ -1,16 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const products = require('../data/products');
+//const products = require('../data/products');
 const _ = require('underscore');
-
+const db = require("../node_modules/.bin/models");
 router.get('/', function(req, res) {
-    if (products === undefined){
-        res.status(404)
-            .json({message: `products not found`})
-    };
-    res
-        .status(200)
-        .json(products)
+    // if (products === undefined){
+    //     res.status(404)
+    //         .json({message: `products not found`})
+    // };
+    // res
+    //     .status(200)
+    //     .json(products)
+    db.Product.findAll({raw:true})
+        .then(products => {
+            res.send(products)
+        })
 });
 
 router.post('/', function (req, res) {
