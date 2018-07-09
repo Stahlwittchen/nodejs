@@ -1,75 +1,74 @@
-const express = require('express');
-const app = express();
+const express = require("express");
+const bodyParser = require("body-parser");
 const mongoClient = require("mongodb").MongoClient;
+const mongoose = require('mongoose');
 
-const url = "mongodb://localhost:27017/";
-mongoClient.connect(url, function(err, client){
+const app = express();
+const jsonParser = bodyParser.json();
+const url = "mongodb://localhost:27017/citiesdb";
 
-    const db = client.db("citiesdb");
-    const collection = db.collection("cities");
-    const query = {};
-    const cursor = collection.find(query);
-    let cities = [
-        {
-            "name": "Brest",
-            "country": "Belarus",
-            "capital": false,
-            "location": {
-                "lat": 52.097621,
-                "long": 23.734050
-            }
-        }, {
-            "name": "Minsk",
-            "country": "Belarus",
-            "capital": true,
-            "location": {
-                "lat": 53.9,
-                "long": 27.56667
-            }
-        }, {
-            "name": "Hrodna",
-            "country": "Belarus",
-            "capital": false,
-            "location": {
-                "lat": 53.6884,
-                "long": 23.8258
-            }
-        },{
-            "name": "Gomel",
-            "country": "Belarus",
-            "capital": false,
-            "location": {
-                "lat": 52.4345,
-                "long": 30.9754
-            }
-        }
+app.use(express.static(__dirname + "/public"));
 
-        ];
-    // if(err) return console.log(err);
-    //
-    // collection.insertMany(cities, function(err, results){
-    //
-    //     if(err){
-    //         return console.log(err);
-    //     }
-    //
-    //     console.log(results.ops);
-    //     client.close();
-    // });
-    collection.count(function (err, count) {
-        const random = Math.floor(Math.random()*count);
-        cursor.sort({_id : -1});
-        cursor.skip(random);
-        cursor.limit(1);
-        cursor.each(function(err, doc) {
-            if(err) throw err;
-            if(doc == null) {
-                return client.close();
-            }
-            console.dir(doc);
+app.get("/cities", function(req, res){
+
+    mongoClient.connect(url, function(err, client){
+        client.db("citiesdb").collection("cities").find({}).toArray(function(err, cities){
+            res.send(cities)
+            client.close();
         });
-    })
+    });
 });
 
+app.get("/cities/:id", function(req, res){
+    const id = JSON.parse(req.params.id);
+    console.log(mongoose.Types.ObjectId(id))
+
+    mongoClient.connect(url, function(err, client){
+        client.db("citiesdb").collection("cities").findOne({_id: mongoose.Types.ObjectId(id)}, function(err, city){
+            if(err) return res.status(400).send(err)
+            res.send(city)
+            client.close();
+        });
+    });
+});
+
+// app.post("/cities", jsonParser, function (req, res) {
+//
+//     if(!req.body) return res.sendStatus(400);
+//
+//     const cityName = req.body.name;
+//     const cityCountry = req.body.country;
+//     const city = {name: cityName, country: cityCountry};
+//
+//     mongoClient.connect(url, function(err, client){
+//         client.db("citiesdb").collection("cities").insertOne(city, function(err, result){
+//
+//             if(err) return res.status(400).send();
+//
+//             res.send(city);
+//             client.close();
+//         });
+//     });
+// });
+//
+// app.put("/cities", jsonParser, function(req, res){
+//
+//     if(!req.body) return res.sendStatus(400);
+//     const id = JSON.parse(req.params.id);
+//     const cityName = req.body.name;
+//     const cityCountry = req.body.country;
+//
+//     mongoClient.connect(url, function(err, client){
+//         client.db("citiesdb").collection("cities").findOneAndUpdate({_id: objectId(id)}, { $set: {country: cityCountry, name: cityName}},
+//             {returnOriginal: false },function(err, result){
+//
+//                 if(err) return res.status(400).send();
+//
+//                 const city = result.value;
+//                 res.send(city);
+//                 client.close();
+//             });
+//     });
+// });
 
 module.exports = app;
