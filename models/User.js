@@ -1,5 +1,13 @@
-export default class User {
-    constructor() {
-        console.log('User module');
-    }
-}
+const mongoose = require('mongoose');
+
+const userSchema = mongoose.Schema({
+    name: String,
+    email: String,
+    isActive: Boolean,
+    password: String
+});
+
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;

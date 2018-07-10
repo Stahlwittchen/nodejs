@@ -1,40 +1,51 @@
 const express = require('express');
 const router = express.Router();
-const products = require('../data/products');
-const _ = require('underscore');
+const Products = require('../models/Product');
+
+const  corn = new Products({
+    title: "Some product",
+    price: "9.99$",
+    availability: true,
+    reviews: "some text. More test for god of test! =)"
+})
 
 router.get('/', function(req, res) {
-    if (products === undefined){
-        res.status(404)
-            .json({message: `products not found`})
-    };
-    res
-        .status(200)
-        .json(products)
+    Products.find({}, function (err, products) {
+        if (err) throw err;
+        // corn.save(function () {
+        //     console.log('Corn was successfully saved')
+        // });
+        res.send(products);
+    })
+});
+router.get("/:id", function(req, res){
+    Products.findById(req.params.id,  function (err, product) {
+        console.log(err, product);
+        if (err) throw err;
+        res.send(product)
+    })
+    // Products.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, product) {
+    //     corn.update(function () {
+    //         console.log('Corn was successfully updated')
+    //     });
+    //     if (err) return res.status(500).send(err);
+    //     res.send(product)
+    // })
+    // Products.findByIdAndRemove(req.params.id,  function (err, product) {
+    //     corn.remove(function () {
+    //         console.log('Corn was successfully removed')
+    //     });
+    //     if (err) throw err;
+    //     res.send(product.name)
+    // })
 });
 
-router.post('/', function (req, res) {
-    if(!req.body) return res.sendStatus(400);
-    products.push(req.body);
-    res.json(req.body)
-});
-
-router.get('/:id', function(req, res) {
-    const  product =  _.find(products, {id: req.params.id});
-    if (product === undefined){
-        res.status(404)
-            .json({message: `product with id ${req.params.id} not found`})
-    }
-    res.json(product);
-});
-
-router.get('/:id/reviews', function(req, res) {
-    const  product =  _.find(products, {id: req.params.id});
-    if (product === undefined){
-        res.status(404)
-            .json({message: `reviews for product with id ${req.params.id} not found`})
-    }
-    res.json(product.reviews);
+router.get("/:id/reviews", function(req, res){
+    Products.findById(req.params.id,  function (err, product) {
+        console.log(err, product);
+        if (err) throw err;
+        res.send(product.reviews)
+    });
 });
 
 module.exports = router;
