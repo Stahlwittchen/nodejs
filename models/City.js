@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const citySchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     name: String,
     country: String,
     capital: Boolean,
