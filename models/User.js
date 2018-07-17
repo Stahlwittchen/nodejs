@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-    name: {
-        type: String,
-        unique: true,
-        required: true
-    },
+    name: String,
     email: String,
     isActive: Boolean,
-    password: String
+    password: String,
+    lastModifiedDate: Date
+});
+
+userSchema.pre('save', function(next) {
+    this.lastModifiedDate = new Date();
+    next();
 });
 
 
