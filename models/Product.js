@@ -7,7 +7,13 @@ const productSchema = mongoose.Schema({
             return name.charAt(0) === name.charAt(0).toUpperCase()
         }
     },
-    price: String,
+    price: {
+        type: String,
+        validate: function (price) {
+            console.log(price)
+            return price > 0
+        }
+    },
     availability: Boolean,
     reviews : String,
     lastModifiedDate: Date
@@ -15,8 +21,6 @@ const productSchema = mongoose.Schema({
 
 productSchema.pre('save', function(next) {
     this.lastModifiedDate = new Date();
-    this.lastModifiedDate.toDateString();
-    console.log(this.lastModifiedDate.toDateString())
     next();
 });
 

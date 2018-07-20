@@ -43,15 +43,17 @@ router
         });
     })
     .put('/:id', function(req, res, next) {
-        Products.findByIdAndUpdate(req.params.id, req.body, function (err, product) {
+        Products.findById(req.params.id, function (err, product) {
             if (err) return next(err);
+            product.set(req.body);
             product.save(function (err) {
                 if (!err) {
                     console.log("updated");
+                    return res.send(product);
                 } else {
                     console.log(err);
                 }
-                return res.send(product);
+
             });
         });
     });

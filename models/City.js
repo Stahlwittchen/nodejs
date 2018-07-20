@@ -17,8 +17,7 @@ const citySchema = mongoose.Schema({
 });
 
 citySchema.pre('save', function(next) {
-    const date = new Date;
-    this.lastModifiedDate = date.toString();
+    this.lastModifiedDate = new Date;
     next();
 });
 
