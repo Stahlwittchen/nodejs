@@ -4,9 +4,9 @@ const router = express.Router();
 const Users = require('../models/User');
 
 router
-    .get('/', function(req, res) {
+    .get('/', function(req, res, next) {
         Users.find({}, function (err, users) {
-            if (err) throw err;
+            if (err) return next(err);
             res.send(users);
         })
     })
@@ -22,7 +22,7 @@ router
             res.json(newUser);
         });
     })
-    .delete("/:id", function(req, res){
+    .delete("/:id", function(req, res, next){
         if (!req.body) return res.sendStatus(400);
         Users.findById(req.params.id,  function (err, user) {
             user.remove(function (err) {
@@ -36,15 +36,16 @@ router
         });
     })
     .put('/:id', function(req, res, next) {
-        Users.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
+        Users.findById(req.params.id, function (err, user) {
             if (err) return next(err);
+            user.set(req.body);
             user.save(function (err) {
                 if (!err) {
                     console.log("updated");
+                    return res.send(user);
                 } else {
                     console.log(err);
                 }
-                return res.send(user);
             });
         });
     });

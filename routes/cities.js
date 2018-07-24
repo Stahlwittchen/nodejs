@@ -4,9 +4,9 @@ const router = express.Router();
 const Cities = require('../models/City');
 
 router
-    .get('/', function(req, res) {
+    .get('/', function(req, res, next) {
         Cities.find({}, function (err, cities) {
-            if (err) throw err;
+            if (err) return next(err);
             res.send(cities);
         })
     })
@@ -22,14 +22,14 @@ router
             res.json(newCity);
         });
     })
-    .get("/:id", function(req, res){
+    .get("/:id", function(req, res, next){
         Cities.findById(req.params.id,  function (err, city) {
             console.log(err, city);
-            if (err) throw err;
+            if (err) return next(err);
             res.send(city)
         })
     })
-    .delete("/:id", function(req, res){
+    .delete("/:id", function(req, res, next){
         if (!req.body) return res.sendStatus(400);
         Cities.findById(req.params.id,  function (err, city) {
             city.remove(function (err) {
@@ -43,15 +43,16 @@ router
         });
     })
     .put('/:id', function(req, res, next) {
-        Cities.findByIdAndUpdate(req.params.id, req.body, function (err, city) {
+        Cities.findById(req.params.id, function (err, city) {
             if (err) return next(err);
+            city.set(req.body);
             city.save(function (err) {
                 if (!err) {
                     console.log("updated");
+                    return res.send(city);
                 } else {
                     console.log(err);
                 }
-                return res.send(city);
             });
         });
     });

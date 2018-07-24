@@ -3,9 +3,9 @@ const router = express.Router();
 const Products = require('../models/Product');
 
 router
-    .get('/', function(req, res) {
+    .get('/', function(req, res, next) {
         Products.find({}, function (err, products) {
-            if (err) throw err;
+            if (err) return next(err);
             res.send(products);
         })
     })
@@ -23,13 +23,13 @@ router
     });
 
 router
-    .get("/:id", function(req, res){
+    .get("/:id", function(req, res, next){
         Products.findById(req.params.id,  function (err, product) {
-            if (err) throw err;
+            if (err) return next(err);
             res.send(product)
         })
     })
-    .delete("/:id", function(req, res){
+    .delete("/:id", function(req, res, next){
         if (!req.body) return res.sendStatus(400);
         Products.findById(req.params.id,  function (err, product) {
             product.remove(function (err) {
@@ -58,10 +58,10 @@ router
         });
     });
 
-router.get("/:id/reviews", function(req, res){
+router.get("/:id/reviews", function(req, res, next){
     Products.findById(req.params.id,  function (err, product) {
         console.log(err, product);
-        if (err) throw err;
+        if (err) return next(err);
         res.send(product.reviews)
     });
 });
