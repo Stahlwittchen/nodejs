@@ -1,0 +1,427 @@
+---
+swagger: "2.0"
+info:
+  description: This is a simple API
+  version: "2"
+  title: My API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+
+paths:
+  /cities:
+    get:
+      tags:
+      - developers
+      summary: get a list of cities
+      operationId: getCities
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/City'
+    post:
+      tags:
+      - admins
+      summary: add a new city to a database
+      description: This can only be done by the logged user.
+      operationId: addCity
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: city
+        description: City to add
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+
+  /cities/{id}:
+    get:
+      tags:
+      - developers
+      summary: city discription
+      operationId: getCity
+      description:
+        city discription
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: id
+          description: get data by City id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/City'
+        400:
+          description: invalid input, object invalid
+    put:
+      tags:
+      - admins
+      summary: update a city
+      operationId: updateCity
+      description: update a city from the system
+      consumes:
+      - application/json
+      parameters:
+      - type: integer
+        format: int32
+        in: path
+        name: id
+        description: City id to update
+        required: true
+      - in: body
+        name: city properties
+        description: Add a needed property or a few to postman
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        201:
+          description: item updated
+        400:
+          description: invalid input, object invalid
+    delete:
+      tags:
+      - admins
+      summary: delete a city by ID
+      operationId: deleteCity
+      description: ID of the city that needs to be deleted from database
+      parameters:
+      - in: path
+        name: id
+        description: City id to delete
+        required: true
+        type: integer
+        format: int32
+      responses:
+        201:
+          description: item deleted
+        400:
+          description: Invalid ID supplied
+
+  /users:
+    get:
+      tags:
+      - developers
+      summary: get a list of users
+      operationId: getUsers
+      description:
+        list of avalible users
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      tags:
+      - admins
+      summary: add a new user
+      operationId: addUser
+      description: Add a user to the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: User to add
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+
+  /users/{:id}:
+    get:
+      tags:
+      - developers
+      summary: user data
+      operationId: userData
+      description:
+        user data
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: :id
+          description: User id to get
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: bad input parameter
+    put:
+      tags:
+      - admins
+      summary: update a user
+      operationId: updateUser
+      description: update a user from the system
+      consumes:
+      - application/json
+      parameters:
+      - in: path
+        name: :id
+        description: User id to update
+        required: true
+        type: integer
+        format: int32
+      - name: user properties
+        in: body
+        description: Add a needed property or a few to postman
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+    delete:
+      tags:
+      - admins
+      summary: delete a user by ID
+      operationId: deleteUser
+      description: ID of the user that needs to be deleted from database
+      parameters:
+      - in: path
+        name: :id
+        description: User id to delete
+        required: true
+        type: integer
+        format: int32
+      responses:
+        201:
+          description: item deleted
+        400:
+          description: Invalid ID supplied
+
+  /products:
+    get:
+      tags:
+      - developers
+      summary: get a list of all added products to database
+      operationId: getProducts
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        400:
+          description: invalid input, object invalid
+    post:
+      tags:
+      - admins
+      summary: add a new product
+      operationId: addProduct
+      description: Add a product to the system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: product
+        description: Product to add
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+
+  /products/{:id}:
+    get:
+      tags:
+      - developers
+      summary: product description
+      operationId: productDiscription
+      description:
+        product description
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: :id
+          description: Products id to get
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            $ref: '#/definitions/Product'
+        400:
+          description: bad input parameter
+    put:
+      tags:
+      - admins
+      summary: update a product
+      operationId: updateProduct
+      description: update a product from the system
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: product properties
+        description: Add a needed property or a few to postman
+        schema:
+          $ref: '#/definitions/Product'
+      - in: path
+        name: :id
+        description: Products id to update
+        required: true
+        type: integer
+        format: int32
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+    delete:
+      tags:
+      - admins
+      summary: delete a product by ID
+      operationId: deleteProduct
+      description: ID of the product that needs to be deleted from database
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: :id
+        description: product id to delete
+        required: true
+        type: integer
+        format: int32
+      responses:
+        201:
+          description: item deleted
+        400:
+          description: Invalid ID supplied
+
+definitions:
+  City:
+    type: object
+    required:
+    - name
+    - country
+    - capital
+    - location
+    - lastModifiedDate
+    properties:
+      name:
+        type: string
+        example: Tokio
+      country:
+        type: string
+        example: Japan
+      capital:
+        type: boolean
+        example: true
+      location:
+        type: string
+        example: any
+      lastModifiedDate:
+        type: string
+        example: 10 Jule
+  User:
+    type: object
+    required:
+    - name
+    - email
+    - isActive
+    - password
+    - lastModifiedDate
+    properties:
+      name:
+        type: string
+        example: Mila
+      email:
+        type: string
+        example: mila@mail.com
+      isActive:
+        type: boolean
+        example: true
+      password:
+        type: string
+        example: qwerty
+      lastModifiedDate:
+        type: string
+        example: 10 Jule
+  Product:
+    type: object
+    required:
+    - title
+    - price
+    - availability
+    - reviews
+    - lastModifiedDate
+    properties:
+      title:
+        type: string
+        example: pen
+      price:
+        type: number
+        example: 99
+      availability:
+        type: boolean
+        example: true
+      reviews:
+        type: string
+        example: some text
+      lastModifiedDate:
+        type: string
+        example: 10 Jule
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /Stahlwittchen/myApi2/1.0.0
+schemes:
+ - https

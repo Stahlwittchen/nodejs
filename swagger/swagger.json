@@ -1,0 +1,520 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is a simple API",
+    "version" : "2",
+    "title" : "My API",
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/Stahlwittchen/myApi2/1.0.0",
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/cities" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "get a list of cities",
+        "operationId" : "getCities",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/City"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "add a new city to a database",
+        "description" : "This can only be done by the logged user.",
+        "operationId" : "addCity",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "city",
+          "description" : "City to add",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/City"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/cities/{id}" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "city discription",
+        "description" : "city discription",
+        "operationId" : "getCity",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "get data by City id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/City"
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "admins" ],
+        "summary" : "update a city",
+        "description" : "update a city from the system",
+        "operationId" : "updateCity",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "City id to update",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "city properties",
+          "description" : "Add a needed property or a few to postman",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/City"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item updated"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admins" ],
+        "summary" : "delete a city by ID",
+        "description" : "ID of the city that needs to be deleted from database",
+        "operationId" : "deleteCity",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "City id to delete",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item deleted"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          }
+        }
+      }
+    },
+    "/users" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "get a list of users",
+        "description" : "list of avalible users",
+        "operationId" : "getUsers",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/User"
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "add a new user",
+        "description" : "Add a user to the system",
+        "operationId" : "addUser",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "user",
+          "description" : "User to add",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/users/{:id}" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "user data",
+        "description" : "user data",
+        "operationId" : "userData",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : ":id",
+          "in" : "path",
+          "description" : "User id to get",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "admins" ],
+        "summary" : "update a user",
+        "description" : "update a user from the system",
+        "operationId" : "updateUser",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : ":id",
+          "in" : "path",
+          "description" : "User id to update",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "user properties",
+          "description" : "Add a needed property or a few to postman",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/User"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admins" ],
+        "summary" : "delete a user by ID",
+        "description" : "ID of the user that needs to be deleted from database",
+        "operationId" : "deleteUser",
+        "parameters" : [ {
+          "name" : ":id",
+          "in" : "path",
+          "description" : "User id to delete",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item deleted"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          }
+        }
+      }
+    },
+    "/products" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "get a list of all added products to database",
+        "operationId" : "getProducts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Product"
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "add a new product",
+        "description" : "Add a product to the system",
+        "operationId" : "addProduct",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "product",
+          "description" : "Product to add",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Product"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/products/{:id}" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "product description",
+        "description" : "product description",
+        "operationId" : "productDiscription",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : ":id",
+          "in" : "path",
+          "description" : "Products id to get",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/Product"
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "admins" ],
+        "summary" : "update a product",
+        "description" : "update a product from the system",
+        "operationId" : "updateProduct",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "product properties",
+          "description" : "Add a needed property or a few to postman",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Product"
+          }
+        }, {
+          "name" : ":id",
+          "in" : "path",
+          "description" : "Products id to update",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          },
+          "409" : {
+            "description" : "an existing item already exists"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admins" ],
+        "summary" : "delete a product by ID",
+        "description" : "ID of the product that needs to be deleted from database",
+        "operationId" : "deleteProduct",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : ":id",
+          "in" : "path",
+          "description" : "product id to delete",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "item deleted"
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "City" : {
+      "type" : "object",
+      "required" : [ "capital", "country", "lastModifiedDate", "location", "name" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Tokio"
+        },
+        "country" : {
+          "type" : "string",
+          "example" : "Japan"
+        },
+        "capital" : {
+          "type" : "boolean",
+          "example" : true
+        },
+        "location" : {
+          "type" : "string",
+          "example" : "any"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "example" : "10 Jule"
+        }
+      },
+      "example" : {
+        "country" : "Japan",
+        "capital" : true,
+        "lastModifiedDate" : "10 Jule",
+        "name" : "Tokio",
+        "location" : "any"
+      }
+    },
+    "User" : {
+      "type" : "object",
+      "required" : [ "email", "isActive", "lastModifiedDate", "name", "password" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Mila"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "mila@mail.com"
+        },
+        "isActive" : {
+          "type" : "boolean",
+          "example" : true
+        },
+        "password" : {
+          "type" : "string",
+          "example" : "qwerty"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "example" : "10 Jule"
+        }
+      },
+      "example" : {
+        "password" : "qwerty",
+        "lastModifiedDate" : "10 Jule",
+        "name" : "Mila",
+        "isActive" : true,
+        "email" : "mila@mail.com"
+      }
+    },
+    "Product" : {
+      "type" : "object",
+      "required" : [ "availability", "lastModifiedDate", "price", "reviews", "title" ],
+      "properties" : {
+        "title" : {
+          "type" : "string",
+          "example" : "pen"
+        },
+        "price" : {
+          "type" : "number",
+          "example" : 99.0
+        },
+        "availability" : {
+          "type" : "boolean",
+          "example" : true
+        },
+        "reviews" : {
+          "type" : "string",
+          "example" : "some text"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "example" : "10 Jule"
+        }
+      },
+      "example" : {
+        "reviews" : "some text",
+        "lastModifiedDate" : "10 Jule",
+        "price" : 99.0,
+        "availability" : true,
+        "title" : "pen"
+      }
+    }
+  }
+}
